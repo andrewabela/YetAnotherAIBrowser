@@ -10,10 +10,13 @@
 
   <body>
     <nav>
-      <button id="back-btn">Back</button>
-      <button id="reload-btn">Reload</button>
-      <input type="text" id="address-bar" placeholder="Enter URL" />
-      <button id="go-btn">Go</button>
+      <button id="back-btn" disabled>Back</button>
+      <button id="reload-btn" disabled>Reload</button>
+      <input type="text" id="address-bar" placeholder="Enter URL"
+        onkeydown="if(event.key === 'Enter') { window.open(document.getElementById('address-bar').value); }" />
+      <button id="go-btn" 
+        onclick="window.open(document.getElementById('address-bar').value)"
+      >Go</button>
       <button id="settings-btn">Settings</button>
     </nav>
     <main class="container">
@@ -27,36 +30,6 @@
       <div id="disclaimer">
         //TODO: Add a disclaimer here
       </div>
-
-
-
-      <!-- <h1>Welcome to Tauri</h1>
-
-      <div class="row">
-        <a href="https://tauri.app" target="_blank">
-          <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-          target="_blank"
-        >
-          <img
-            src="/assets/javascript.svg"
-            class="logo vanilla"
-            alt="JavaScript logo"
-          />
-        </a>
-      </div>
-      <p>Click on the Tauri logo to learn more about the framework</p>
-
-      <form class="row" id="greet-form">
-        <input id="greet-input" placeholder="Enter a name..." />
-        <button type="submit">Greet</button>
-      </form>
-      <p id="greet-msg"></p>
-      <div id="what-link-msg">
-        <h3>Test 123....</h3>
-      </div> -->
     </main>
   </body>
 </html>

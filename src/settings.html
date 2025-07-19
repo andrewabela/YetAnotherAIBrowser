@@ -2,23 +2,24 @@
     <link rel="stylesheet" href="styles.css" />
     <h1>Settings</h1>
     <button id="close-settings-btn" class="close-settings-btn">Close Settings</button>
-    <label for="llm-provider">AI Provider:</label>
-    <select id="llm-provider">
-        <option value="google">Google LM Studio</option>
-        <option value="openai">OpenAI</option>
-        <option value="openai-compatible">OpenAI Compatible</option>
-        <option value="inceptionlabs">Inception Labs</option>
-        <option value="anthropic">Anthropic</option>
-        <option value="open-router">Open Router</option>
-        <option value="ollama">Ollama</option>
-        <option value="lm-studio">LM Studio</option>
-    </select><br/>
-    <label for="llm-provider-endpoint">AI Provider Endpoint:</label>
-    <input type="text" id="llm-provider-endpoint" placeholder="Enter endpoint URL" /><br/>
-    <label for="llm-provider-key">AI Provider API Key:</label>
-    <input type="text" id="llm-provider-key" placeholder="Enter API key" /><br/>
-    <label for="llm-provider-model">AI Provider Model:</label>
-    <select id="llm-provider-model">
-        <input type="text" id="other-model" placeholder="Other" />
-    </select><br/>
+    
+    <div class="settings-form">
+        <label for="llm-provider">AI Provider:</label>
+        <select id="llm-provider">
+            
+        </select><br/>
+        
+        <label for="llm-provider-endpoint">AI Provider Endpoint:</label>
+        <input type="text" id="llm-provider-endpoint" placeholder="Enter endpoint URL" /><br/>
+        
+        <label for="llm-provider-key">AI Provider API Key:</label>
+        <input type="password" id="llm-provider-key" placeholder="Enter API key" /><br/>
+        
+        <label for="llm-provider-model">AI Provider Model:</label>
+        <input type="text" id="llm-provider-model" placeholder="Enter model name" /><br/>
+    </div>
+    
+    <div class="settings-info">
+        <small>Settings are saved automatically.</small>
+    </div>
 </div>
