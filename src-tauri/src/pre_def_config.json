@@ -1,0 +1,18 @@
+{
+    "llm_providers": [
+        {
+            "id": "lmstudio",
+            "name": "LM Studio",
+            "default_endpoint": "http://localhost:1234",
+            "default_api_key": "",
+            "default_model": "phi-4"
+        },
+        {
+            "id": "ollama",
+            "name": "Ollama",
+            "default_endpoint": "http://localhost:11434",
+            "default_api_key": "",
+            "default_model": "phi-4"
+        }
+    ]
+}

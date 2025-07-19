@@ -87,3 +87,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  const settingsBtn = document.getElementById('settings-btn');
+  const settingsIframe = document.getElementById('settings-iframe');
+
+  settingsBtn.addEventListener('click', () => {
+    settingsIframe.style.display = 'block';
+  });
+
+  // Add a load listener to the iframe to ensure its content is ready
+  settingsIframe.addEventListener('load', () => {
+    try {
+      const iframeDoc = settingsIframe.contentWindow.document;
+      const settingsCloseBtn = iframeDoc.getElementById('close-settings-btn');
+
+      if (settingsCloseBtn) {
+        settingsCloseBtn.addEventListener('click', () => {
+          settingsIframe.style.display = 'none';
+        });
+      } else {
+        console.error('Close settings button not found in iframe.');
+      }
+    } catch (e) {
+      console.error('Error accessing iframe content:', e);
+    }
+  });
+});

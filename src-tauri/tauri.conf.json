@@ -10,7 +10,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "yetanotheraibrowser",
+        "title": "Yet Another AI Browser",
         "width": 800,
         "height": 600
       }
