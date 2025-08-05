@@ -52,11 +52,6 @@ async function handleUrl(url) {
   try {
     const result = await invoke('handle_url_click', { url: url });
     console.log('URL handled successfully:', result);
-    // alert("bob");
-    // const linkMsgEl = document.getElementById('what-link-msg');
-    // if (linkMsgEl) {
-    //   linkMsgEl.innerHTML = result;
-    // }
     const content_iframe = document.getElementById('content-iframe');
     content_iframe.srcdoc = result;
     return result;

@@ -13,7 +13,7 @@ fn greet(name: &str) -> String {
 async fn handle_url_click(url: String) -> Result<String, String> {
     // Log the intercepted URL
     println!("Intercepted URL: {}", url);
-    Ok(content::process_url(url))
+    Ok(content::process_url(url).await)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
