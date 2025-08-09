@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use std::fs;
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use tauri_plugin_store::StoreExt;
 
 #[derive(Deserialize)]
@@ -18,13 +18,15 @@ struct LlmProvider {
 }
 
 #[tauri::command]
-pub fn get_all_llm_providers() -> Result<Vec<(String, String)>, String> {
+pub fn get_all_llm_providers(app: AppHandle) -> Result<Vec<(String, String)>, String> {
     println!("get_all_llm_providers called");
-    let config_path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/pre_def_config.json");
-    println!("Config path: {}", config_path);
+    let resource_path = app.path()
+        .resolve("pre_def_config.json", tauri::path::BaseDirectory::Resource)
+        .map_err(|e| format!("Failed to resolve resource path: {}", e))?;
+    println!("Config path: {:?}", resource_path);
     
     // Read the file content
-    let data = fs::read_to_string(config_path)
+    let data = fs::read_to_string(&resource_path)
         .map_err(|e| {
             let error_msg = format!("Failed to read config file: {}", e);
             println!("{}", error_msg);
@@ -55,11 +57,13 @@ pub fn get_all_llm_providers() -> Result<Vec<(String, String)>, String> {
 }
 
 #[tauri::command]
-pub fn get_provider_defaults(provider_id: String) -> Result<(String, String, String), String> {
-    let config_path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/pre_def_config.json");
+pub fn get_provider_defaults(app: AppHandle, provider_id: String) -> Result<(String, String, String), String> {
+    let resource_path = app.path()
+        .resolve("pre_def_config.json", tauri::path::BaseDirectory::Resource)
+        .map_err(|e| format!("Failed to resolve resource path: {}", e))?;
     
     // Read the file content
-    let data = fs::read_to_string(config_path)
+    let data = fs::read_to_string(&resource_path)
         .map_err(|e| format!("Failed to read config file: {}", e))?;
     
     // Parse the JSON data
@@ -155,7 +159,3 @@ pub fn set_llm_model(app: AppHandle, model: String) -> Result<(), String> {
     store.save().map_err(|e| format!("Failed to save store: {}", e))?;
     Ok(())
 }
-
-
-// #[tauri::command]
-// fn get_
