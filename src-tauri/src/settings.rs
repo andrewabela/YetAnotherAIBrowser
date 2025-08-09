@@ -46,7 +46,6 @@ pub fn get_all_llm_providers() -> Result<Vec<(String, String)>, String> {
     // Extract and return the list of (id, name) tuples
     let result: Vec<(String, String)> = config.llm_providers.into_iter()
         .map(|provider| {
-            println!("Provider: {} - {}", provider.id, provider.name);
             (provider.id, provider.name)
         })
         .collect();
@@ -57,7 +56,6 @@ pub fn get_all_llm_providers() -> Result<Vec<(String, String)>, String> {
 
 #[tauri::command]
 pub fn get_provider_defaults(provider_id: String) -> Result<(String, String, String), String> {
-    println!("get_provider_defaults called for: {}", provider_id);
     let config_path = concat!(env!("CARGO_MANIFEST_DIR"), "/src/pre_def_config.json");
     
     // Read the file content
@@ -160,4 +158,4 @@ pub fn set_llm_model(app: AppHandle, model: String) -> Result<(), String> {
 
 
 // #[tauri::command]
-// fn get
+// fn get_

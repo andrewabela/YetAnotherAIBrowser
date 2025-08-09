@@ -10,10 +10,10 @@ fn greet(name: &str) -> String {
 /// This command handles all URL links instead of opening them in the browser.
 /// It receives the URL as a parameter and you can implement custom logic here.
 #[tauri::command]
-async fn handle_url_click(url: String) -> Result<String, String> {
+async fn handle_url_click(app_handle: tauri::AppHandle, url: String) -> Result<String, String> {
     // Log the intercepted URL
     println!("Intercepted URL: {}", url);
-    Ok(content::process_url(url).await)
+    Ok(content::process_url(app_handle, url).await)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

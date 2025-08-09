@@ -10,9 +10,9 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "Yet Another AI Browser",
+        "title": "Yet Another AI Browser (Alpha)",
         "width": 800,
-        "height": 600
+        "height": 650
       }
     ],
     "security": {

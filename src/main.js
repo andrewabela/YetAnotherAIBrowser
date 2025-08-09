@@ -50,13 +50,50 @@ function showSaveStatus(iframeDoc, message, isError = false) {
 // Handle URLs through Rust command
 async function handleUrl(url) {
   try {
+    // disable the search bar and go btn
+    const searchBar = document.getElementById('address-bar');
+    const goBtn = document.getElementById('go-btn');
+    searchBar.value = url;
+    searchBar.disabled = true;
+    goBtn.disabled = true;
+    const not_an_iframe = document.getElementById('not-an-iframe');
+    not_an_iframe.style.display = 'none';
+    // Show loading indicator
+    const loadingIndicator = document.getElementById('loading-indicator');
+    loadingIndicator.style.display = 'flex';
     const result = await invoke('handle_url_click', { url: url });
     console.log('URL handled successfully:', result);
-    const content_iframe = document.getElementById('content-iframe');
-    content_iframe.srcdoc = result;
+
+    // Set up load event listener before setting content
+    loadingIndicator.style.display = 'none';
+    // Re-enable the search bar and go button
+    searchBar.disabled = false;
+    goBtn.disabled = false;
+    // Show the not-an-iframe div again
+    not_an_iframe.style.display = 'block';
+    // content_iframe.srcdoc = result;
+    not_an_iframe.innerHTML = result;
+
     return result;
   } catch (error) {
     console.error('Error handling URL:', error);
+    // Ensure loading indicator is hidden and buttons are re-enabled on error
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) {
+      loadingIndicator.style.display = 'none';
+    }
+    const searchBar = document.getElementById('address-bar');
+    const goBtn = document.getElementById('go-btn');
+    if (searchBar) {
+      searchBar.disabled = false;
+    }
+    if (goBtn) {
+      goBtn.disabled = false;
+    }
+    const not_an_iframe = document.getElementById('not-an-iframe');
+    if (not_an_iframe) {
+      not_an_iframe.style.display = 'block';
+    }
     throw error;
   }
 }

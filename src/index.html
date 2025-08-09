@@ -1,35 +1,45 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/main.js" defer></script>
-  </head>
 
-  <body>
-    <nav>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tauri App</title>
+  <script type="module" src="/main.js" defer></script>
+</head>
+
+<body>
+  <nav id="main-navigation-bar">
+    <div class="nav-group">
       <button id="back-btn" disabled>Back</button>
       <button id="reload-btn" disabled>Reload</button>
-      <input type="text" id="address-bar" placeholder="Enter URL"
-        onkeydown="if(event.key === 'Enter') { window.open(document.getElementById('address-bar').value); }" />
-      <button id="go-btn" 
-        onclick="window.open(document.getElementById('address-bar').value)"
-      >Go</button>
+    </div>
+    <input type="text" id="address-bar" placeholder="Enter URL"
+      onkeydown="if(event.key === 'Enter') { window.open(document.getElementById('address-bar').value); }" />
+    <div class="nav-group">
+      <button id="go-btn" onclick="window.open(document.getElementById('address-bar').value)">Go</button>
       <button id="settings-btn">Settings</button>
-    </nav>
-    <main class="container">
-      <iframe id="content-iframe" srcdoc="
-        <div>
-          <p>Hi :></p>
-        </div>
-      ">
-      </iframe>
-      <iframe id="settings-iframe" src="settings.html" style="display: none;"></iframe>
-      <div id="disclaimer">
-        //TODO: Add a disclaimer here
-      </div>
-    </main>
-  </body>
+    </div>
+  </nav>
+  <main class="container">
+    <div id="not-an-iframe">
+      Enter URL in the address bar
+      <br />
+      Example:
+      <a href="https://example.com/shopping/cpu+cooler?price>500&sort=reviews" >https://example.com/shopping/gpu?price>500&sort=reviews</a>
+    </div>
+    <div id="loading-indicator">
+      <image src="assets/icon.svg" id="loading-icon" alt="Loading...." />
+    </div>
+    </div>
+
+    </div>
+    <iframe id="settings-iframe" src="settings.html" style="display: none;"></iframe>
+    <div id="disclaimer">
+      The software is provided "As is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the software.
+    </div>
+  </main>
+</body>
+
 </html>

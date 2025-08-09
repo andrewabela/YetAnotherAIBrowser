@@ -1,7 +1,7 @@
 [package]
 name = "yetanotheraibrowser"
 version = "0.1.0"
-description = "A Tauri App"
+description = "An ai browser that replaces fetching websites with large language models that generate the content themselves."
 authors = ["you"]
 edition = "2021"
 

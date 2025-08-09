@@ -1,42 +1,173 @@
 nav {
-  padding-bottom: 8px;
+  padding-bottom: 8px !important;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 #settings-iframe {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 90%;
-  height: 80%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  background-color: rgba(228, 228, 228, 0.815);
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  width: 90% !important;
+  height: 80% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+  background-color: rgba(228, 228, 228, 0.815) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  padding: 24px !important;
+}
+
+.settings-container h1 {
+  text-align: center !important;
+  margin-bottom: 20px !important;
+  color: #333 !important;
 }
 
 .settings-container .close-settings-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  background-color: #b95c49 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 5px !important;
+  padding: 8px 12px !important;
+  cursor: pointer !important;
 }
 
-#content-iframe {
-  width: 100%;
+.settings-container .close-settings-btn:hover {
+  background-color: #b95c49d9 !important;
+}
+
+.settings-form {
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+  flex-grow: 1 !important;
+}
+
+.settings-form label {
+  display: block !important;
+  margin-bottom: 8px !important;
+  font-weight: bold !important;
+  color: #555 !important;
+}
+
+.settings-form input[type="text"],
+.settings-form input[type="password"],
+.settings-form select {
+  width: calc(100% - 20px) !important; /* Account for padding */
+  padding: 10px !important;
+  margin-bottom: 15px !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+  box-sizing: border-box !important; /* Include padding and border in the element's total width and height */
+}
+
+.settings-info {
+  text-align: center !important;
+  margin-top: auto !important; /* Pushes the info to the bottom */
+  color: #777 !important;
+}
+
+#not-an-iframe {
+  width: 100% !important;
+  flex: 1 !important;
+  border: none !important;
+}
+
+#loading-indicator {
+  display: none;
+  justify-content: center;
+  align-items: center;
   flex: 1;
-  border: none;
+}
+
+#loading-icon {
+  width: 25%;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#main-navigation-bar {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px !important;
+  background-color: #454a64 !important;
+}
+
+.nav-group {
+  display: flex !important;
+  gap: 10px !important;
+}
+
+#address-bar {
+  flex-grow: 1 !important;
+  margin: 0 10px !important;
+  padding: 8px !important;
+  border: none !important;
+  background-color:#b17164 !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+}
+
+#address-bar:hover {
+    background-color:#b17164ec !important;
+}
+
+#back-btn,
+#reload-btn,
+#go-btn,
+#settings-btn {
+  cursor: pointer !important;
+  padding: 10px !important;
+  background-color: #b95c49 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+}
+
+#back-btn:hover,
+#reload-btn:hover,
+#go-btn:hover,
+#settings-btn:hover {
+  background-color: #b95c49d9 !important;
+  color: #ffffff !important;
+}
+
+#back-btn:disabled,
+#reload-btn:disabled,
+#go-btn:disabled,
+#settings-btn:disabled {
+  background-color: #b95c4944 !important;
+  color: #ffffff5b !important;
+  cursor: not-allowed !important;
 }

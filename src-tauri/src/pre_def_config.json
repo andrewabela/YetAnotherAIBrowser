@@ -3,16 +3,37 @@
         {
             "id": "lmstudio",
             "name": "LM Studio",
-            "default_endpoint": "http://localhost:1234",
+            "default_endpoint": "http://localhost:1234/v1/chat/completions",
             "default_api_key": "",
-            "default_model": "phi-4"
+            "default_model": "qwen/qwen2.5-coder-14b"
         },
         {
             "id": "ollama",
             "name": "Ollama",
-            "default_endpoint": "http://localhost:11434",
+            "default_endpoint": "http://localhost:11434/api/generate",
             "default_api_key": "",
-            "default_model": "phi-4"
+            "default_model": "deepseek-coder-v2:16b"
+        },
+        {
+            "id": "google_ai_studio",
+            "name": "Google AI Studio",
+            "default_endpoint": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}",
+            "default_api_key": "",
+            "default_model": "gemini-2.0-flash-lite-001"
+        },
+        {
+            "id": "open_router",
+            "name": "Open Router",
+            "default_endpoint": "https://openrouter.ai/api/v1/chat/completions",
+            "default_api_key": "",
+            "default_model": "microsoft/mai-ds-r1:free"
+        },
+        {
+            "id": "openai_compatible",
+            "name": "OpenAI Compatible",
+            "default_endpoint": "",
+            "default_api_key": "",
+            "default_model": ""
         }
     ]
 }
