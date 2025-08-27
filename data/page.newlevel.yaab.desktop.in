@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=yetanotheraibrowser
+Exec=yetanotheraibrowser
+Icon=page.newlevel.yaab
+Terminal=false
+Type=Application
+Categories=Utility;
+Keywords=GTK;
+StartupNotify=true
+DBusActivatable=true

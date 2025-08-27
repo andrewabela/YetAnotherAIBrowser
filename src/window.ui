@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="YetanotheraibrowserWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">YetAnotherAIBrowser</property>
+    <property name="default-width">950</property>
+    <property name="default-height">650</property>
+    <property name="titlebar">
+      <object class="GtkHeaderBar">
+        <child type="title">
+          <object class="GtkBox">
+            <property name="orientation">horizontal</property>
+            <property name="spacing">6</property>
+            <child>
+              <object class="GtkEntry" id="url_field">
+                <property name="hexpand">True</property>
+                <property name="placeholder-text" translatable="yes">Enter prompt or URL</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="go_btn">
+                <property name="icon-name">go-next-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Send</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="end">
+          <object class="GtkMenuButton">
+            <property name="primary">False</property>
+            <property name="icon-name">open-menu-symbolic</property>
+            <property name="tooltip-text" translatable="yes">Main Menu</property>
+            <property name="menu-model">primary_menu</property>
+          </object>
+        </child>
+      </object>
+    </property>
+    <property name="child">
+      <object class="GtkScrolledWindow">
+        <property name="vexpand">True</property>
+        <property name="child">
+          <object class="GtkTextView" id="response_view">
+            <property name="editable">False</property>
+            <property name="wrap-mode">word-char</property>
+          </object>
+        </property>
+      </object>
+    </property>
+  </template>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_About YetAnotherAIBrowser</attribute>
+        <attribute name="action">app.about</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>
