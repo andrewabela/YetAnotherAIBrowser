@@ -21,6 +21,13 @@ impl ClientKind {
         }
     }
 
+    pub fn prompt(&self, model: &str, prompt: &str) -> anyhow::Result<String> {
+        match self {
+            ClientKind::Ollama(c) => c.prompt(model, prompt),
+            ClientKind::LmStudio(c) => c.prompt(model, prompt),
+        }
+    }
+
     pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, prompt: &str, on_chunk: F) -> anyhow::Result<()> {
         match self {
             ClientKind::Ollama(c) => c.prompt_stream(model, prompt, on_chunk),
