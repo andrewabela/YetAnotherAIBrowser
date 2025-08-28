@@ -52,7 +52,6 @@ pub fn set_model_name(name: &str) {
 	let _ = s.set_string("model-name", name);
 }
 
-// Common trait that backends can implement (currently not object-safe for async, uses blocking APIs)
 pub trait LocalLlmProvider {
 	fn list_models(&self) -> anyhow::Result<Vec<String>>;
 	fn prompt(&self, model: &str, prompt: &str) -> anyhow::Result<String>;
