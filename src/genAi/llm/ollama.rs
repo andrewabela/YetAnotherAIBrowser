@@ -13,6 +13,7 @@ impl OllamaClient {
     pub fn new<S: Into<String>>(base_url: S, api_key: Option<String>) -> anyhow::Result<Self> {
         let client = reqwest::blocking::Client::builder()
             .user_agent("yetanotheraibrowser/0.1")
+            .timeout(None)
             .build()?;
         Ok(Self { base_url: base_url.into(), api_key, client })
     }
@@ -36,36 +37,66 @@ impl OllamaClient {
     }
 
 
-    pub fn prompt(&self, model: &str, prompt: &str) -> anyhow::Result<String> {
+    pub fn prompt(&self, model: &str, usr_prompt: &str, sys_prompt: &str) -> anyhow::Result<String> {
         #[derive(Serialize)]
-        struct GenReq<'a> { model: &'a str, prompt: &'a str, stream: bool }
+        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool, options: Options }
+        #[derive(Serialize)]
+        struct Message<'a> { role: &'a str, content: &'a str }
+        #[derive(Serialize)]
+        struct Options { num_predict: i32 }
         #[derive(Deserialize)]
-        struct GenResp { response: String }
-        let url = format!("{}/api/generate", self.base_url.trim_end_matches('/'));
-        let resp = self.auth_header(self.client.post(url))
-            .json(&GenReq { model, prompt, stream: false })
-            .send()?;
-        if !resp.status().is_success() { anyhow::bail!("Ollama generate failed: {}", resp.status()); }
-        let data: GenResp = resp.json()?;
-        Ok(data.response)
+        struct ChatResp { message: ChatMessage }
+        #[derive(Deserialize)]
+        struct ChatMessage { content: String }
+        let url = format!("{}/api/chat", self.base_url.trim_end_matches('/'));
+        let messages = if sys_prompt.trim().is_empty() {
+            vec![Message { role: "user", content: usr_prompt }]
+        } else {
+            vec![
+                Message { role: "system", content: sys_prompt },
+                Message { role: "user", content: usr_prompt }
+            ]
+        };
+        let options = Options { num_predict: 32768 };
+        let body = ChatReq { model, messages, stream: false, options };
+        let resp = self.auth_header(self.client.post(url)).json(&body).send()?;
+        if !resp.status().is_success() { anyhow::bail!("Ollama chat failed: {}", resp.status()); }
+        let data: ChatResp = resp.json()?;
+        Ok(data.message.content)
     }
 
-    pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
+    pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, usr_prompt: &str, sys_prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
         #[derive(Serialize)]
-        struct GenReq<'a> { model: &'a str, prompt: &'a str, stream: bool }
+        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool, options: Options }
+        #[derive(Serialize)]
+        struct Message<'a> { role: &'a str, content: &'a str }
+        #[derive(Serialize)]
+        struct Options { num_predict: i32 }
         #[derive(Deserialize)]
-        struct StreamResp { response: Option<String>, done: Option<bool> }
-        let url = format!("{}/api/generate", self.base_url.trim_end_matches('/'));
-        let resp = self.auth_header(self.client.post(url))
-            .json(&GenReq { model, prompt, stream: true })
-            .send()?;
+        struct StreamResp { message: Option<StreamMessage>, done: Option<bool> }
+        #[derive(Deserialize)]
+        struct StreamMessage { content: Option<String> }
+        let url = format!("{}/api/chat", self.base_url.trim_end_matches('/'));
+        let messages = if sys_prompt.trim().is_empty() {
+            vec![Message { role: "user", content: usr_prompt }]
+        } else {
+            vec![
+                Message { role: "system", content: sys_prompt },
+                Message { role: "user", content: usr_prompt }
+            ]
+        };
+        let options = Options { num_predict: 32768 };
+        let body = ChatReq { model, messages, stream: true, options };
+        let resp = self.auth_header(self.client.post(url)).json(&body).send()?;
         if !resp.status().is_success() { anyhow::bail!("Ollama stream failed: {}", resp.status()); }
         let reader = BufReader::new(resp);
         for line in reader.lines() {
             let line = line?;
             if line.trim().is_empty() { continue; }
             if let Ok(chunk) = serde_json::from_str::<StreamResp>(&line) {
-                if let Some(r) = chunk.response.as_ref() { on_chunk(r); }
+                if let Some(msg) = chunk.message {
+                    if let Some(c) = msg.content { on_chunk(&c); }
+                }
                 if matches!(chunk.done, Some(true)) { break; }
             }
         }

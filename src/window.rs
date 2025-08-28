@@ -33,6 +33,8 @@ use crate::genAi::llm::logic;
 use webkit6::WebView;
 use webkit6::prelude::WebViewExt;
 
+const SYS_PROMPT: &str = "You are a helpful assistant that responds to user queries with HTML code.";
+
 mod imp {
     use super::*;
 
@@ -128,7 +130,7 @@ impl YetanotheraibrowserWindow {
             let client = logic::ClientKind::new_default();
             let result = if let Ok(client) = client {
                 let model = crate::config::get_model_name();
-                match client.prompt(&model, &prompt_clone) {
+                match client.prompt(&model, &prompt_clone, SYS_PROMPT) {
                     Ok(response) => Ok(response),
                     Err(e) => Err(format!("Failed to fetch response from the model: {}", e)),
                 }

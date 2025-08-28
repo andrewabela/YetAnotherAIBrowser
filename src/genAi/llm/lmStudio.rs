@@ -12,6 +12,7 @@ impl LmStudioClient {
     pub fn new<S: Into<String>>(base_url: S, api_key: Option<String>) -> anyhow::Result<Self> {
         let client = reqwest::blocking::Client::builder()
             .user_agent("yetanotheraibrowser/0.1")
+            .timeout(None)
             .build()?;
         Ok(Self { base_url: base_url.into(), api_key, client })
     }
@@ -36,9 +37,9 @@ impl LmStudioClient {
     }
 
 
-    pub fn prompt(&self, model: &str, prompt: &str) -> anyhow::Result<String> {
+    pub fn prompt(&self, model: &str, usr_prompt: &str, sys_prompt: &str) -> anyhow::Result<String> {
         #[derive(Serialize)]
-        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool }
+        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool, max_tokens: u32 }
         #[derive(Serialize)]
         struct Message<'a> { role: &'a str, content: &'a str }
         #[derive(Deserialize)]
@@ -48,16 +49,24 @@ impl LmStudioClient {
         #[derive(Deserialize)]
         struct ChoiceMessage { content: String }
         let url = format!("{}/v1/chat/completions", self.base_url.trim_end_matches('/'));
-        let body = ChatReq { model, messages: vec![Message { role: "user", content: prompt }], stream: false };
+        let messages = if sys_prompt.trim().is_empty() {
+            vec![Message { role: "user", content: usr_prompt }]
+        } else {
+            vec![
+                Message { role: "system", content: sys_prompt },
+                Message { role: "user", content: usr_prompt }
+            ]
+        };
+        let body = ChatReq { model, messages, stream: false, max_tokens: 32768 };
         let resp = self.auth_header(self.client.post(url)).json(&body).send()?;
         if !resp.status().is_success() { anyhow::bail!("LM Studio chat failed: {}", resp.status()); }
         let data: ChatResp = resp.json()?;
         Ok(data.choices.into_iter().next().map(|c| c.message.content).unwrap_or_default())
     }
 
-    pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
+    pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, usr_prompt: &str, sys_prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
         #[derive(Serialize)]
-        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool }
+        struct ChatReq<'a> { model: &'a str, messages: Vec<Message<'a>>, stream: bool, max_tokens: u32 }
         #[derive(Serialize)]
         struct Message<'a> { role: &'a str, content: &'a str }
         #[derive(Deserialize)]
@@ -67,7 +76,15 @@ impl LmStudioClient {
         #[derive(Deserialize)]
         struct Delta { content: Option<String> }
         let url = format!("{}/v1/chat/completions", self.base_url.trim_end_matches('/'));
-        let body = ChatReq { model, messages: vec![Message { role: "user", content: prompt }], stream: true };
+        let messages = if sys_prompt.trim().is_empty() {
+            vec![Message { role: "user", content: usr_prompt }]
+        } else {
+            vec![
+                Message { role: "system", content: sys_prompt },
+                Message { role: "user", content: usr_prompt }
+            ]
+        };
+        let body = ChatReq { model, messages, stream: true, max_tokens: 32768 };
         let resp = self.auth_header(self.client.post(url)).json(&body).send()?;
         if !resp.status().is_success() { anyhow::bail!("LM Studio chat stream failed: {}", resp.status()); }
         let reader = BufReader::new(resp);
