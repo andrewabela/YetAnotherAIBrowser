@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="yetanotheraibrowser">
+	<schema id="page.newlevel.yaab" path="/page/newlevel/yaab/">
+		<key name="model-provider" type="s">
+			<default>'ollama'</default>
+			<summary>Model provider</summary>
+			<description>The LLM model provider to use (ollama or lmstudio).</description>
+		</key>
+		<key name="model-name" type="s">
+			<default>'gpt-oss:20b'</default>
+			<summary>Model name</summary>
+			<description>The LLM model identifier string used with the selected provider.</description>
+		</key>
+	</schema>
+</schemalist>

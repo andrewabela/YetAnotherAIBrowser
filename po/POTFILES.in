@@ -1,0 +1,6 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+data/page.newlevel.yaab.desktop.in
+data/page.newlevel.yaab.metainfo.xml.in
+data/page.newlevel.yaab.gschema.xml
+src/window.ui

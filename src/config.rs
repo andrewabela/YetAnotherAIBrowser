@@ -1,0 +1,59 @@
+pub static VERSION: &str = "0.1.0";
+pub static GETTEXT_PACKAGE: &str = "yetanotheraibrowser";
+pub static LOCALEDIR: &str = "/app/share/locale";
+pub static PKGDATADIR: &str = "/app/share/yetanotheraibrowser";
+
+use gtk::gio;
+use gio::prelude::*;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum LlmModelProvider {
+	Ollama,
+	LmStudio,
+}
+
+impl LlmModelProvider {
+	pub fn as_str(&self) -> &'static str {
+		match self {
+			Self::Ollama => "ollama",
+			Self::LmStudio => "lmstudio",
+		}
+	}
+
+	pub fn from_str(s: &str) -> Self {
+		match s {
+			"lmstudio" => Self::LmStudio,
+			_ => Self::Ollama,
+		}
+	}
+}
+
+fn settings() -> gio::Settings {
+	gio::Settings::new("page.newlevel.yaab")
+}
+
+pub fn get_model_provider() -> LlmModelProvider {
+	let s = settings();
+	LlmModelProvider::from_str(&s.string("model-provider").as_str())
+}
+
+pub fn set_model_provider(provider: LlmModelProvider) {
+	let s = settings();
+	let _ = s.set_string("model-provider", provider.as_str());
+}
+
+pub fn get_model_name() -> String {
+	let s = settings();
+	s.string("model-name").to_string()
+}
+
+pub fn set_model_name(name: &str) {
+	let s = settings();
+	let _ = s.set_string("model-name", name);
+}
+
+pub trait LocalLlmProvider {
+	fn list_models(&self) -> anyhow::Result<Vec<String>>;
+	fn prompt(&self, model: &str, prompt: &str) -> anyhow::Result<String>;
+	fn prompt_stream<F: FnMut(&str)>(&self, model: &str, prompt: &str, on_chunk: F) -> anyhow::Result<()>;
+}
