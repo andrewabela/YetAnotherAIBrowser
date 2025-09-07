@@ -28,18 +28,18 @@ impl ClientKind {
         }
     }
 
-    pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, usr_prompt: &str, sys_prompt: &str, on_chunk: F) -> anyhow::Result<()> {
-        match self {
-            ClientKind::Ollama(c) => c.prompt_stream(model, usr_prompt, sys_prompt, on_chunk),
-            ClientKind::LmStudio(c) => c.prompt_stream(model, usr_prompt, sys_prompt, on_chunk),
-        }
-    }
+    // pub fn prompt_stream<F: FnMut(&str)>(&self, model: &str, usr_prompt: &str, sys_prompt: &str, on_chunk: F) -> anyhow::Result<()> {
+    //     match self {
+    //         ClientKind::Ollama(c) => c.prompt_stream(model, usr_prompt, sys_prompt, on_chunk),
+    //         ClientKind::LmStudio(c) => c.prompt_stream(model, usr_prompt, sys_prompt, on_chunk),
+    //     }
+    // }
 }
 
 // Convenience helpers
-pub fn stream_prompt<F: FnMut(&str)>(usr_prompt: &str, sys_prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
-    let model = crate::config::get_model_name();
-    if model.trim().is_empty() { anyhow::bail!("No model configured"); }
-    let client = ClientKind::new_default()?;
-    client.prompt_stream(&model, usr_prompt, sys_prompt, |c| on_chunk(c))
-}
+// pub fn stream_prompt<F: FnMut(&str)>(usr_prompt: &str, sys_prompt: &str, mut on_chunk: F) -> anyhow::Result<()> {
+//     let model = crate::config::get_model_name();
+//     if model.trim().is_empty() { anyhow::bail!("No model configured"); }
+//     let client = ClientKind::new_default()?;
+//     client.prompt_stream(&model, usr_prompt, sys_prompt, |c| on_chunk(c))
+// }

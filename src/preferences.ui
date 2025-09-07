@@ -125,6 +125,17 @@
                         <property name="halign">start</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkLinkButton">
+                        <property name="uri">https://github.com/andrewabela/YetAnotherAIBrowser/tree/dev/backend</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="label">To use image gen AI please run https://github.com/andrewabela/YetAnotherAIBrowser/tree/dev/backend/image-gen.py</property>
+                            <property name="wrap">true</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
                     
 
                   </object>

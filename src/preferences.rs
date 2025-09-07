@@ -117,7 +117,5 @@ impl YetanotheraibrowserPreferences {
         }
     }
 
-    fn current_model(&self) -> String { self.imp().model_entry.text().to_string() }
-
-    // Removed download functionality
+    // fn current_model(&self) -> String { self.imp().model_entry.text().to_string() }
 }
